@@ -1,0 +1,32 @@
+[
+  {
+    "username": "Anuj",
+    "location": "Pune",
+    "hashtag": "#swym",
+    "text": "hello world"
+  },
+  {
+    "username": "Vaibhav",
+    "location": "London",
+    "hashtag": "#awesome",
+    "text": "hello bitter world"
+  },
+  {
+    "username": "Vaibhav",
+    "location": "London",
+    "hashtag": "#swym",
+    "text": "feeling nice being here"
+  },
+  {
+    "username": "Anuj",
+    "location": "Hyderabad",
+    "hashtag": "#swym",
+    "text": "conference at Marriot"
+  },
+  {
+    "username": "John",
+    "location": "NYU",
+    "hashtag": "#monsoom",
+    "text": "what a lovely day"
+  }
+]
