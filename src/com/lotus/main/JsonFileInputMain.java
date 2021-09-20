@@ -77,7 +77,7 @@ public class JsonFileInputMain {
 		JsonFileInputMain object = new JsonFileInputMain();
 		Config config = new Config(filename);
 		TweetDetails tweet = null;
-		Workers pool = new Workers(10,1);
+		Workers pool = new Workers(2,1);
 		pool.activateTweetWorkers();
 		pool.activateAnalyticsWorkers();
 		TweetPipeline pipeline = TweetPipeline.getInstance();

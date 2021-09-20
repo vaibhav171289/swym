@@ -27,5 +27,6 @@ public abstract class Analytics {
 	public abstract int getLocationBasedTweetCount(String location);
 	public abstract void mostUsedText();
 	public abstract ArrayList<String> getMostInfluentialHashtags();
+	public abstract void highlightMilestoneUsers();
 
 }

@@ -24,8 +24,13 @@ public class ServiceThread extends Thread {
 			 */
 			tweet = tweetPipeline.getTweet();
 			if (tweet != null) {
-				System.out.println(this.getName() + " has been awakened");
 				operations.parseTweet(tweet);
+			}
+			try {
+				Thread.sleep(11000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

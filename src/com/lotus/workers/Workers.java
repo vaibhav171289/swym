@@ -29,7 +29,7 @@ public class Workers {
 	public void activateAnalyticsWorkers() {
 		
 		AnalyticsImp analytics = new AnalyticsImp(new Operations());
-		for (int i = 0; i < workerThreadSize; i++) {
+		for (int i = 0; i < analyticsThreadSize; i++) {
 			AnalyticsThreads an = new AnalyticsThreads(analytics);
 			Thread th = new Thread(an,"Analytics->"+(i+1));
 			th.start();

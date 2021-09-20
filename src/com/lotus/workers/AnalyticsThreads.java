@@ -15,9 +15,10 @@ public class AnalyticsThreads implements Runnable {
 			analytics.getDistinctHashtagCount();
 			analytics.getDistinctUserCount();
 			analytics.getMostInfluentialHashtags();
+			analytics.highlightMilestoneUsers();
 			System.out.println("========================Updated Values at interval of 10 secs======================================");
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

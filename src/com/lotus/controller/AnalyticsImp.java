@@ -1,13 +1,13 @@
 package com.lotus.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.MinMaxPriorityQueue;
+import com.lotus.util.Lockobj;
 import com.lotus.util.Pair;
 
 public class AnalyticsImp extends Analytics {
@@ -18,11 +18,11 @@ public class AnalyticsImp extends Analytics {
 	}
 
 	@Override
-	public synchronized int getDistinctHashtagCount() {
+	public int getDistinctHashtagCount() {
 		Map<String, Integer> hashtagCountMap = Controller.hashtagCountMap;
 		if (hashtagCountMap.size() > 0) {
 			System.out.println(col_RED);
-			System.out.printf("DISTINCT HASHTAGS COUNT");
+			System.out.printf("DISTINCT HASHTAGS COUNT: ");
 			for (Entry<String, Integer> e : hashtagCountMap.entrySet()) {
 				System.out.printf(e.getKey() + " : " + e.getValue() + " , ");
 			}
@@ -41,8 +41,10 @@ public class AnalyticsImp extends Analytics {
 
 	@Override
 	public int getLocationBasedTweetCount(String location) {
-		ConcurrentHashMap<String, Integer> loc = Controller.locationTweetCountMap;
-		return loc.get(location);
+		synchronized (Controller.locationTweetCountMap) {
+			ConcurrentHashMap<String, Integer> loc = Controller.locationTweetCountMap;
+			return loc.get(location);
+		}
 	}
 
 	@Override
@@ -51,15 +53,16 @@ public class AnalyticsImp extends Analytics {
 	}
 
 	@Override
-	public synchronized ArrayList<String> getMostInfluentialHashtags() {
-		MinMaxPriorityQueue<Pair<String, Integer>> top100hashtags = Controller.top100hashtags;
+	public ArrayList<String> getMostInfluentialHashtags() {
 		ArrayList<String> listInDecensdingOrder = new ArrayList<String>();
-		Iterator<Pair<String, Integer>> it = top100hashtags.iterator();
-		while (it.hasNext()) {
-			Pair<String, Integer> p = it.next();
-			listInDecensdingOrder.add(p.getFirst());
+		synchronized (Controller.top100hashtags) {
+			LinkedList<Pair<String, Integer>> top100hashtags = Controller.top100hashtags;
+			Iterator<Pair<String, Integer>> it = top100hashtags.iterator();
+			while (it.hasNext()) {
+				Pair<String, Integer> p = it.next();
+				listInDecensdingOrder.add(p.getFirst());
+			}
 		}
-//		Collections.reverse(listInDecensdingOrder);
 		if (listInDecensdingOrder.size() > 0) {
 			System.out.println(col_GREEN);
 			System.out.printf("Top trending HashTags: ");
@@ -67,6 +70,46 @@ public class AnalyticsImp extends Analytics {
 			System.out.println(col_NC);
 		}
 		return listInDecensdingOrder;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void highlightMilestoneUsers() {
+		// creating a copy before
+		
+		synchronized (Controller.milestoneUser) {
+			LinkedList<Pair<String, Integer>> ll = Controller.milestoneUser;
+
+			while (!ll.isEmpty()) {
+				Pair<String, Integer> p = ll.peek();
+				ll.poll();
+				int count = p.getSecond();
+				switch (count) {
+				case 5: {
+					System.out.println(col_CYAN);
+					System.out.printf(
+							"Hurray!!!  " + p.getFirst() + " earn a badge of fast learner by tweets of " + count);
+					System.out.println(col_NC);
+					break;
+				}
+				case 6: {
+					System.out.println(col_YELLOW);
+					System.out.printf("Wow!!!  " + p.getFirst() + " earn a badge of flash power by tweets of " + count);
+					System.out.println(col_NC);
+					break;
+				}
+				case 7: {
+					System.out.println(col_WHITE);
+					System.out.printf("Superb!!!  " + p.getFirst() + " earn a badge of thor by tweets of " + count);
+					System.out.println(col_NC);
+					break;
+				}
+				default:
+
+				}
+			}
+		}
+
 	}
 
 }
